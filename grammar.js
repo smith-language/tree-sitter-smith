@@ -83,7 +83,13 @@ module.exports = grammar({
     },
 
     unary_expression: ($) =>
-      prec(PREC.unary, seq(choice($.negative, $.not), $._expression)),
+      prec(
+        PREC.unary,
+        seq(
+          field("operator", choice($.negative, $.not)),
+          field("operand", $._expression),
+        ),
+      ),
 
     parenthesized_expression: ($) => seq("(", $._expression, ")"),
 

@@ -172,8 +172,8 @@ Negative integer_literal
 
 (source_file
   (unary_expression
-    (negative)
-    (integer_literal)))
+    operator: (negative)
+    operand: (integer_literal)))
 
 ========
 Logical not
@@ -185,8 +185,8 @@ not true
 
 (source_file
   (unary_expression
-    (not)
-    (boolean_literal)))
+    operator: (not)
+    operand: (boolean_literal)))
 
 ========
 Unary precedence - negative with multiplication
@@ -199,8 +199,8 @@ Unary precedence - negative with multiplication
 (source_file
   (binary_expression
     left: (unary_expression
-      (negative)
-      (integer_literal))
+      operator: (negative)
+      operand: (integer_literal))
     operator: (multiply)
     right: (integer_literal)))
 
@@ -215,8 +215,8 @@ not true and false
 (source_file
   (binary_expression
     left: (unary_expression
-      (not)
-      (boolean_literal))
+      operator: (not)
+      operand: (boolean_literal))
     operator: (and)
     right: (boolean_literal)))
 
@@ -230,10 +230,10 @@ not not true
 
 (source_file
   (unary_expression
-    (not)
-    (unary_expression
-      (not)
-      (boolean_literal))))
+    operator: (not)
+    operand: (unary_expression
+      operator: (not)
+      operand: (boolean_literal))))
 
 ========
 Negative with binary expression
@@ -245,8 +245,8 @@ Negative with binary expression
 
 (source_file
   (unary_expression
-    (negative)
-    (parenthesized_expression
+    operator: (negative)
+    operand: (parenthesized_expression
       (binary_expression
         left: (integer_literal)
         operator: (add)
@@ -266,9 +266,99 @@ Complex expression with unary operators
     operator: (add)
     right: (binary_expression
       left: (unary_expression
-        (negative)
-        (integer_literal))
+        operator: (negative)
+        operand: (integer_literal))
       operator: (multiply)
       right: (unary_expression
-        (not)
-        (boolean_literal)))))
+        operator: (not)
+        operand: (boolean_literal)))))
+
+========
+Simple parenthesized expression
+========
+
+(42)
+
+---
+
+(source_file
+  (parenthesized_expression
+    (integer_literal)))
+
+========
+Parenthesized binary expression
+========
+
+(1 + 2)
+
+---
+
+(source_file
+  (parenthesized_expression
+    (binary_expression
+      left: (integer_literal)
+      operator: (add)
+      right: (integer_literal))))
+
+========
+Precedence override with parentheses
+========
+
+(1 + 2) * 3
+
+---
+
+(source_file
+  (binary_expression
+    left: (parenthesized_expression
+      (binary_expression
+        left: (integer_literal)
+        operator: (add)
+        right: (integer_literal)))
+    operator: (multiply)
+    right: (integer_literal)))
+
+========
+Nested parentheses
+========
+
+((1 + 2) * 3)
+
+---
+
+(source_file
+  (parenthesized_expression
+    (binary_expression
+      left: (parenthesized_expression
+        (binary_expression
+          left: (integer_literal)
+          operator: (add)
+          right: (integer_literal)))
+      operator: (multiply)
+      right: (integer_literal))))
+
+========
+Complex expression with parentheses and unary operators
+========
+
+not (true and false) or (-42 > 10)
+
+---
+
+(source_file
+  (binary_expression
+    left: (unary_expression
+      operator: (not)
+      operand: (parenthesized_expression
+        (binary_expression
+          left: (boolean_literal)
+          operator: (and)
+          right: (boolean_literal))))
+    operator: (or)
+    right: (parenthesized_expression
+      (binary_expression
+        left: (unary_expression
+          operator: (negative)
+          operand: (integer_literal))
+        operator: (greater)
+        right: (integer_literal)))))

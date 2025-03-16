@@ -318,21 +318,29 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "negative"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "not"
-              }
-            ]
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "negative"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "not"
+                }
+              ]
+            }
           },
           {
-            "type": "SYMBOL",
-            "name": "_expression"
+            "type": "FIELD",
+            "name": "operand",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
           }
         ]
       }
