@@ -1,26 +1,95 @@
 ========
-Addition followed by multiplication
+Boolean literals
 ========
 
-42 + 10 * 2
+true false
+
+---
+
+(source_file
+  (boolean)
+  (boolean))
+
+========
+Comparison operators
+========
+
+42 == 42
+10 != 20
+5 < 10
+5 <= 5
+10 > 5
+10 >= 10
 
 ---
 
 (source_file
   (binary_expression
     left: (integer)
-    operator: (add)
-    right: (binary_expression
-      left: (integer)
-      operator: (multiply)
-      right: (integer))))
-
+    operator: (equal)
+    right: (integer))
+  (binary_expression
+    left: (integer)
+    operator: (not_equal)
+    right: (integer))
+  (binary_expression
+    left: (integer)
+    operator: (less)
+    right: (integer))
+  (binary_expression
+    left: (integer)
+    operator: (less_equal)
+    right: (integer))
+  (binary_expression
+    left: (integer)
+    operator: (greater)
+    right: (integer))
+  (binary_expression
+    left: (integer)
+    operator: (greater_equal)
+    right: (integer)))
 
 ========
-Multiplication followed by addition
+Logical operators
 ========
 
-42 * 10 + 2
+true and false
+true or false
+
+---
+
+(source_file
+  (binary_expression
+    left: (boolean)
+    operator: (and)
+    right: (boolean))
+  (binary_expression
+    left: (boolean)
+    operator: (or)
+    right: (boolean)))
+
+========
+Operator precedence - and vs or
+========
+
+true and false or true
+
+---
+
+(source_file
+  (binary_expression
+    left: (binary_expression
+      left: (boolean)
+      operator: (and)
+      right: (boolean))
+    operator: (or)
+    right: (boolean)))
+
+========
+Operator precedence - comparison vs logical
+========
+
+10 < 20 and 30 > 20
 
 ---
 
@@ -28,7 +97,67 @@ Multiplication followed by addition
   (binary_expression
     left: (binary_expression
       left: (integer)
-      operator: (multiply)
+      operator: (less)
       right: (integer))
-    operator: (add)
+    operator: (and)
+    right: (binary_expression
+      left: (integer)
+      operator: (greater)
+      right: (integer))))
+
+========
+Subtraction and division
+========
+
+42 - 10 / 2
+
+---
+
+(source_file
+  (binary_expression
+    left: (integer)
+    operator: (subtract)
+    right: (binary_expression
+      left: (integer)
+      operator: (divide)
+      right: (integer))))
+
+========
+Modulo operation
+========
+
+100 % 30
+
+---
+
+(source_file
+  (binary_expression
+    left: (integer)
+    operator: (modulo)
     right: (integer)))
+
+========
+Complex expression with multiple precedence levels
+========
+
+42 + 10 * 2 == 62 and true or false
+
+---
+
+(source_file
+  (binary_expression
+    left: (binary_expression
+      left: (binary_expression
+        left: (binary_expression
+          left: (integer)
+          operator: (add)
+          right: (binary_expression
+            left: (integer)
+            operator: (multiply)
+            right: (integer)))
+        operator: (equal)
+        right: (integer))
+      operator: (and)
+      right: (boolean))
+    operator: (or)
+    right: (boolean)))
