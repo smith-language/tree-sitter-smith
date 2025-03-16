@@ -1,0 +1,34 @@
+========
+Addition followed by multiplication
+========
+
+42 + 10 * 2
+
+---
+
+(source_file
+  (binary_expression
+    left: (integer)
+    operator: (add)
+    right: (binary_expression
+      left: (integer)
+      operator: (multiply)
+      right: (integer))))
+
+
+========
+Multiplication followed by addition
+========
+
+42 * 10 + 2
+
+---
+
+(source_file
+  (binary_expression
+    left: (binary_expression
+      left: (integer)
+      operator: (multiply)
+      right: (integer))
+    operator: (add)
+    right: (integer)))
