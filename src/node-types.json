@@ -12,11 +12,19 @@
             "named": true
           },
           {
-            "type": "boolean",
+            "type": "boolean_literal",
             "named": true
           },
           {
-            "type": "integer",
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
             "named": true
           }
         ]
@@ -88,11 +96,19 @@
             "named": true
           },
           {
-            "type": "boolean",
+            "type": "boolean_literal",
             "named": true
           },
           {
-            "type": "integer",
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
             "named": true
           }
         ]
@@ -100,9 +116,45 @@
     }
   },
   {
-    "type": "boolean",
+    "type": "boolean_literal",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "negative",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "parenthesized_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "source_file",
@@ -118,15 +170,79 @@
           "named": true
         },
         {
-          "type": "boolean",
+          "type": "boolean_literal",
           "named": true
         },
         {
-          "type": "integer",
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "subtract",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "unary_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "negative",
+          "named": true
+        },
+        {
+          "type": "not",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
   },
   {
     "type": "add",
@@ -157,7 +273,7 @@
     "named": true
   },
   {
-    "type": "integer",
+    "type": "integer_literal",
     "named": true
   },
   {
@@ -177,15 +293,15 @@
     "named": true
   },
   {
+    "type": "not",
+    "named": true
+  },
+  {
     "type": "not_equal",
     "named": true
   },
   {
     "type": "or",
-    "named": true
-  },
-  {
-    "type": "subtract",
     "named": true
   },
   {

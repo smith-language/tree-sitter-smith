@@ -13,6 +13,7 @@ const PREC = {
   compare: 2,
   add: 3,
   multiply: 4,
+  unary: 5,
 };
 
 module.exports = grammar({
@@ -21,7 +22,14 @@ module.exports = grammar({
   rules: {
     source_file: ($) => repeat($._expression),
 
-    _expression: ($) => choice($.binary_expression, $.integer, $.boolean),
+    _expression: ($) =>
+      choice(
+        $.binary_expression,
+        $.unary_expression,
+        $.parenthesized_expression,
+        $.integer_literal,
+        $.boolean_literal,
+      ),
 
     or: ($) => "or",
     and: ($) => "and",
@@ -36,6 +44,8 @@ module.exports = grammar({
     multiply: ($) => "*",
     divide: ($) => "/",
     modulo: ($) => "%",
+    negative: ($) => "-",
+    not: ($) => "not",
 
     binary_expression: ($) => {
       /** @type {Array<[number, RuleOrLiteral, (precedence: number, rule: Rule)=>Rule]>} */
@@ -72,8 +82,13 @@ module.exports = grammar({
       );
     },
 
-    integer: ($) => /\d+/,
+    unary_expression: ($) =>
+      prec(PREC.unary, seq(choice($.negative, $.not), $._expression)),
 
-    boolean: ($) => choice("true", "false"),
+    parenthesized_expression: ($) => seq("(", $._expression, ")"),
+
+    integer_literal: ($) => /\d+/,
+
+    boolean_literal: ($) => choice("true", "false"),
   },
 });

@@ -7,8 +7,8 @@ true false
 ---
 
 (source_file
-  (boolean)
-  (boolean))
+  (boolean_literal)
+  (boolean_literal))
 
 ========
 Comparison operators
@@ -25,29 +25,29 @@ Comparison operators
 
 (source_file
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (equal)
-    right: (integer))
+    right: (integer_literal))
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (not_equal)
-    right: (integer))
+    right: (integer_literal))
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (less)
-    right: (integer))
+    right: (integer_literal))
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (less_equal)
-    right: (integer))
+    right: (integer_literal))
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (greater)
-    right: (integer))
+    right: (integer_literal))
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (greater_equal)
-    right: (integer)))
+    right: (integer_literal)))
 
 ========
 Logical operators
@@ -60,13 +60,13 @@ true or false
 
 (source_file
   (binary_expression
-    left: (boolean)
+    left: (boolean_literal)
     operator: (and)
-    right: (boolean))
+    right: (boolean_literal))
   (binary_expression
-    left: (boolean)
+    left: (boolean_literal)
     operator: (or)
-    right: (boolean)))
+    right: (boolean_literal)))
 
 ========
 Operator precedence - and vs or
@@ -79,11 +79,11 @@ true and false or true
 (source_file
   (binary_expression
     left: (binary_expression
-      left: (boolean)
+      left: (boolean_literal)
       operator: (and)
-      right: (boolean))
+      right: (boolean_literal))
     operator: (or)
-    right: (boolean)))
+    right: (boolean_literal)))
 
 ========
 Operator precedence - comparison vs logical
@@ -96,14 +96,14 @@ Operator precedence - comparison vs logical
 (source_file
   (binary_expression
     left: (binary_expression
-      left: (integer)
+      left: (integer_literal)
       operator: (less)
-      right: (integer))
+      right: (integer_literal))
     operator: (and)
     right: (binary_expression
-      left: (integer)
+      left: (integer_literal)
       operator: (greater)
-      right: (integer))))
+      right: (integer_literal))))
 
 ========
 Subtraction and division
@@ -115,12 +115,12 @@ Subtraction and division
 
 (source_file
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (subtract)
     right: (binary_expression
-      left: (integer)
+      left: (integer_literal)
       operator: (divide)
-      right: (integer))))
+      right: (integer_literal))))
 
 ========
 Modulo operation
@@ -132,9 +132,9 @@ Modulo operation
 
 (source_file
   (binary_expression
-    left: (integer)
+    left: (integer_literal)
     operator: (modulo)
-    right: (integer)))
+    right: (integer_literal)))
 
 ========
 Complex expression with multiple precedence levels
@@ -149,15 +149,126 @@ Complex expression with multiple precedence levels
     left: (binary_expression
       left: (binary_expression
         left: (binary_expression
-          left: (integer)
+          left: (integer_literal)
           operator: (add)
           right: (binary_expression
-            left: (integer)
+            left: (integer_literal)
             operator: (multiply)
-            right: (integer)))
+            right: (integer_literal)))
         operator: (equal)
-        right: (integer))
+        right: (integer_literal))
       operator: (and)
-      right: (boolean))
+      right: (boolean_literal))
     operator: (or)
-    right: (boolean)))
+    right: (boolean_literal)))
+
+========
+Negative integer_literal
+========
+
+-42
+
+---
+
+(source_file
+  (unary_expression
+    (negative)
+    (integer_literal)))
+
+========
+Logical not
+========
+
+not true
+
+---
+
+(source_file
+  (unary_expression
+    (not)
+    (boolean_literal)))
+
+========
+Unary precedence - negative with multiplication
+========
+
+-42 * 10
+
+---
+
+(source_file
+  (binary_expression
+    left: (unary_expression
+      (negative)
+      (integer_literal))
+    operator: (multiply)
+    right: (integer_literal)))
+
+========
+Unary precedence - not with and
+========
+
+not true and false
+
+---
+
+(source_file
+  (binary_expression
+    left: (unary_expression
+      (not)
+      (boolean_literal))
+    operator: (and)
+    right: (boolean_literal)))
+
+========
+Chained unary operators
+========
+
+not not true
+
+---
+
+(source_file
+  (unary_expression
+    (not)
+    (unary_expression
+      (not)
+      (boolean_literal))))
+
+========
+Negative with binary expression
+========
+
+-(1 + 2)
+
+---
+
+(source_file
+  (unary_expression
+    (negative)
+    (parenthesized_expression
+      (binary_expression
+        left: (integer_literal)
+        operator: (add)
+        right: (integer_literal)))))
+
+========
+Complex expression with unary operators
+========
+
+42 + -10 * not true
+
+---
+
+(source_file
+  (binary_expression
+    left: (integer_literal)
+    operator: (add)
+    right: (binary_expression
+      left: (unary_expression
+        (negative)
+        (integer_literal))
+      operator: (multiply)
+      right: (unary_expression
+        (not)
+        (boolean_literal)))))
