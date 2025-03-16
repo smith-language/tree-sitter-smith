@@ -12,6 +12,10 @@
             "named": true
           },
           {
+            "type": "boolean",
+            "named": true
+          },
+          {
             "type": "integer",
             "named": true
           }
@@ -26,11 +30,47 @@
             "named": true
           },
           {
+            "type": "and",
+            "named": true
+          },
+          {
             "type": "divide",
             "named": true
           },
           {
+            "type": "equal",
+            "named": true
+          },
+          {
+            "type": "greater",
+            "named": true
+          },
+          {
+            "type": "greater_equal",
+            "named": true
+          },
+          {
+            "type": "less",
+            "named": true
+          },
+          {
+            "type": "less_equal",
+            "named": true
+          },
+          {
+            "type": "modulo",
+            "named": true
+          },
+          {
             "type": "multiply",
+            "named": true
+          },
+          {
+            "type": "not_equal",
+            "named": true
+          },
+          {
+            "type": "or",
             "named": true
           },
           {
@@ -48,12 +88,21 @@
             "named": true
           },
           {
+            "type": "boolean",
+            "named": true
+          },
+          {
             "type": "integer",
             "named": true
           }
         ]
       }
     }
+  },
+  {
+    "type": "boolean",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "source_file",
@@ -69,6 +118,10 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "integer",
           "named": true
         }
@@ -80,7 +133,27 @@
     "named": true
   },
   {
+    "type": "and",
+    "named": true
+  },
+  {
     "type": "divide",
+    "named": true
+  },
+  {
+    "type": "equal",
+    "named": true
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "greater",
+    "named": true
+  },
+  {
+    "type": "greater_equal",
     "named": true
   },
   {
@@ -88,11 +161,35 @@
     "named": true
   },
   {
+    "type": "less",
+    "named": true
+  },
+  {
+    "type": "less_equal",
+    "named": true
+  },
+  {
+    "type": "modulo",
+    "named": true
+  },
+  {
     "type": "multiply",
+    "named": true
+  },
+  {
+    "type": "not_equal",
+    "named": true
+  },
+  {
+    "type": "or",
     "named": true
   },
   {
     "type": "subtract",
     "named": true
+  },
+  {
+    "type": "true",
+    "named": false
   }
 ]

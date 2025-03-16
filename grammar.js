@@ -8,8 +8,11 @@
 // @ts-check
 
 const PREC = {
-  additive: 1,
-  multiplicative: 2,
+  or: 0,
+  and: 1,
+  compare: 2,
+  add: 3,
+  multiply: 4,
 };
 
 module.exports = grammar({
@@ -18,18 +21,41 @@ module.exports = grammar({
   rules: {
     source_file: ($) => repeat($._expression),
 
-    _expression: ($) => choice($.binary_expression, $.integer),
+    _expression: ($) => choice($.binary_expression, $.integer, $.boolean),
 
+    or: ($) => "or",
+    and: ($) => "and",
+    equal: ($) => "==",
+    not_equal: ($) => "!=",
+    less: ($) => "<",
+    less_equal: ($) => "<=",
+    greater: ($) => ">",
+    greater_equal: ($) => ">=",
     add: ($) => "+",
     subtract: ($) => "-",
     multiply: ($) => "*",
     divide: ($) => "/",
+    modulo: ($) => "%",
 
     binary_expression: ($) => {
       /** @type {Array<[number, RuleOrLiteral, (precedence: number, rule: Rule)=>Rule]>} */
       const table = [
-        [PREC.additive, choice($.add, $.subtract), prec.left],
-        [PREC.multiplicative, choice($.multiply, $.divide), prec.left],
+        [PREC.or, $.or, prec.left],
+        [PREC.and, $.and, prec.left],
+        [
+          PREC.compare,
+          choice(
+            $.equal,
+            $.not_equal,
+            $.less,
+            $.less_equal,
+            $.greater,
+            $.greater_equal,
+          ),
+          prec.left,
+        ],
+        [PREC.add, choice($.add, $.subtract), prec.left],
+        [PREC.multiply, choice($.multiply, $.divide, $.modulo), prec.left],
       ];
 
       return choice(
@@ -47,5 +73,7 @@ module.exports = grammar({
     },
 
     integer: ($) => /\d+/,
+
+    boolean: ($) => choice("true", "false"),
   },
 });
