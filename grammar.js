@@ -16,19 +16,43 @@ const PREC = {
   unary: 5,
 };
 
+const primitiveTypes = [
+  "u8",
+  "i8",
+  "u16",
+  "i16",
+  "u32",
+  "i32",
+  "u64",
+  "i64",
+  "u128",
+  "i128",
+  "isize",
+  "usize",
+  "f32",
+  "f64",
+  "bool",
+  "str",
+];
+
 module.exports = grammar({
   name: "smith",
 
   word: ($) => $.identifier,
 
+  conflicts: ($) => [[$._expression, $._pattern]],
+
   rules: {
-    source_file: ($) => repeat($._expression),
+    source_file: ($) => repeat($._statement),
+
+    _statement: ($) => choice($.variable_definition, $._expression),
 
     _expression: ($) =>
       choice(
         $.binary_expression,
         $.unary_expression,
         $.parenthesized_expression,
+        $.tuple_expression,
         $.integer_literal,
         $.boolean_literal,
         $.identifier,
@@ -95,6 +119,45 @@ module.exports = grammar({
       ),
 
     parenthesized_expression: ($) => seq("(", $._expression, ")"),
+
+    tuple_expression: ($) =>
+      seq(
+        "(",
+        seq($._expression, ","),
+        repeat(seq($._expression, ",")),
+        optional($._expression),
+        ")",
+      ),
+
+    variable_definition: ($) =>
+      seq(
+        field("pattern", $._pattern),
+        optional(seq(":", field("type", $._type))),
+        "=",
+        field("value", $._expression),
+      ),
+
+    _type: ($) =>
+      choice(
+        $.tuple_type,
+        alias(choice(...primitiveTypes), $.primitive_type),
+        $._type_identifier,
+      ),
+
+    tuple_type: ($) =>
+      seq("(", seq($._type, repeat(seq(",", $._type))), optional(","), ")"),
+
+    _type_identifier: ($) => alias($.identifier, $.type_identifier),
+
+    _pattern: ($) => choice($.tuple_pattern, $.identifier),
+
+    tuple_pattern: ($) =>
+      seq(
+        "(",
+        optional(seq($._pattern, repeat(seq(",", $._pattern)))),
+        optional(","),
+        ")",
+      ),
 
     integer_literal: ($) => /\d+/,
 

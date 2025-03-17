@@ -448,3 +448,86 @@ trueValue or falseValue
     left: (identifier)
     operator: (or)
     right: (identifier)))
+
+
+========
+Variable definition where value is int literal
+========
+
+x = 42
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (integer_literal)))
+
+========
+Variable definition with type where value is int literal
+========
+
+x: i32 = 42
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    type: (primitive_type)
+    value: (integer_literal)))
+
+========
+Variable definition where value is tuple
+========
+
+x = (42, true)
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (tuple_expression
+      (integer_literal)
+      (boolean_literal))))
+
+
+========
+Variable definition where type and value are tuple
+========
+
+x: (i32, bool) = (42, true)
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    type: (tuple_type
+      (primitive_type)
+      (primitive_type))
+    value: (tuple_expression
+      (integer_literal)
+      (boolean_literal))))
+
+
+========
+Variable definition with tuple pattern
+========
+
+(x, y): (i32, bool) = (42, true)
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (tuple_pattern
+      (identifier)
+      (identifier))
+    type: (tuple_type
+      (primitive_type)
+      (primitive_type))
+    value: (tuple_expression
+      (integer_literal)
+      (boolean_literal))))
