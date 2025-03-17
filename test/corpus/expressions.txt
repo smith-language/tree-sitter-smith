@@ -531,3 +531,37 @@ Variable definition with tuple pattern
     value: (tuple_expression
       (integer_literal)
       (boolean_literal))))
+
+
+========
+Variable definition where value is array
+========
+
+x = [2, 4, 6]
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (array_expression
+      (integer_literal)
+      (integer_literal)
+      (integer_literal))))
+
+
+========
+Variable definition with array pattern
+========
+
+[x, y, z] = [2, 4, 6]
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (array_expression
+      (integer_literal)
+      (integer_literal)
+      (integer_literal))))

@@ -40,7 +40,10 @@ module.exports = grammar({
 
   word: ($) => $.identifier,
 
-  conflicts: ($) => [[$._expression, $._pattern]],
+  conflicts: ($) => [
+    [$._expression, $._pattern],
+    [$.array_expression, $.array_pattern],
+  ],
 
   rules: {
     source_file: ($) => repeat($._statement),
@@ -53,6 +56,7 @@ module.exports = grammar({
         $.unary_expression,
         $.parenthesized_expression,
         $.tuple_expression,
+        $.array_expression,
         $.integer_literal,
         $.boolean_literal,
         $.identifier,
@@ -129,6 +133,9 @@ module.exports = grammar({
         ")",
       ),
 
+    array_expression: ($) =>
+      seq("[", seq(sepBy(",", seq($._expression)), optional(",")), "]"),
+
     variable_definition: ($) =>
       seq(
         field("pattern", $._pattern),
@@ -144,20 +151,15 @@ module.exports = grammar({
         $._type_identifier,
       ),
 
-    tuple_type: ($) =>
-      seq("(", seq($._type, repeat(seq(",", $._type))), optional(","), ")"),
+    tuple_type: ($) => seq("(", sepBy1(",", $._type), optional(","), ")"),
 
     _type_identifier: ($) => alias($.identifier, $.type_identifier),
 
-    _pattern: ($) => choice($.tuple_pattern, $.identifier),
+    _pattern: ($) => choice($.tuple_pattern, $.array_pattern, $.identifier),
 
-    tuple_pattern: ($) =>
-      seq(
-        "(",
-        optional(seq($._pattern, repeat(seq(",", $._pattern)))),
-        optional(","),
-        ")",
-      ),
+    tuple_pattern: ($) => seq("(", sepBy(",", $._pattern), optional(","), ")"),
+
+    array_pattern: ($) => seq("[", sepBy(",", $._pattern), optional(","), "]"),
 
     integer_literal: ($) => /\d+/,
 
@@ -166,3 +168,27 @@ module.exports = grammar({
     identifier: (_) => /[_\p{XID_Start}][_\p{XID_Continue}]*/u,
   },
 });
+
+/**
+ * Creates a rule to match one or more of the rules separated by the separator.
+ *
+ * @param {RuleOrLiteral} sep - The separator to use.
+ * @param {RuleOrLiteral} rule
+ *
+ * @returns {SeqRule}
+ */
+function sepBy1(sep, rule) {
+  return seq(rule, repeat(seq(sep, rule)));
+}
+
+/**
+ * Creates a rule to optionally match one or more of the rules separated by the separator.
+ *
+ * @param {RuleOrLiteral} sep - The separator to use.
+ * @param {RuleOrLiteral} rule
+ *
+ * @returns {ChoiceRule}
+ */
+function sepBy(sep, rule) {
+  return optional(sepBy1(sep, rule));
+}
