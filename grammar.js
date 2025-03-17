@@ -19,6 +19,8 @@ const PREC = {
 module.exports = grammar({
   name: "smith",
 
+  word: ($) => $.identifier,
+
   rules: {
     source_file: ($) => repeat($._expression),
 
@@ -29,6 +31,7 @@ module.exports = grammar({
         $.parenthesized_expression,
         $.integer_literal,
         $.boolean_literal,
+        $.identifier,
       ),
 
     or: ($) => "or",
@@ -96,5 +99,7 @@ module.exports = grammar({
     integer_literal: ($) => /\d+/,
 
     boolean_literal: ($) => choice("true", "false"),
+
+    identifier: (_) => /[_\p{XID_Start}][_\p{XID_Continue}]*/u,
   },
 });

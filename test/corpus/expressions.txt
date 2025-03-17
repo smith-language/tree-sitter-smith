@@ -362,3 +362,89 @@ not (true and false) or (-42 > 10)
           operand: (integer_literal))
         operator: (greater)
         right: (integer_literal)))))
+
+
+========
+Simple identifiers
+========
+
+x
+_y
+foo
+bar_baz
+myVar123
+
+---
+
+(source_file
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier))
+
+========
+Unicode identifiers
+========
+
+α
+β
+變量
+переменная
+σκύλος
+
+---
+
+(source_file
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier))
+
+========
+Identifiers in expressions
+========
+
+x + y
+foo == bar
+_test and value
+
+---
+
+(source_file
+  (binary_expression
+    left: (identifier)
+    operator: (add)
+    right: (identifier))
+  (binary_expression
+    left: (identifier)
+    operator: (equal)
+    right: (identifier))
+  (binary_expression
+    left: (identifier)
+    operator: (and)
+    right: (identifier)))
+
+========
+Keywords should not be identifiers
+========
+
+not notKeyword
+var1 and var2
+trueValue or falseValue
+
+---
+
+(source_file
+  (unary_expression
+    operator: (not)
+    operand: (identifier))
+  (binary_expression
+    left: (identifier)
+    operator: (and)
+    right: (identifier))
+  (binary_expression
+    left: (identifier)
+    operator: (or)
+    right: (identifier)))

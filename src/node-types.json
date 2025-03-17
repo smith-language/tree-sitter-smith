@@ -16,6 +16,10 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
@@ -100,6 +104,10 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
@@ -142,6 +150,10 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
@@ -171,6 +183,10 @@
         },
         {
           "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         },
         {
@@ -207,6 +223,10 @@
           },
           {
             "type": "boolean_literal",
+            "named": true
+          },
+          {
+            "type": "identifier",
             "named": true
           },
           {
@@ -277,6 +297,10 @@
   },
   {
     "type": "greater_equal",
+    "named": true
+  },
+  {
+    "type": "identifier",
     "named": true
   },
   {
