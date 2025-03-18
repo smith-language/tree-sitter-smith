@@ -147,11 +147,23 @@ module.exports = grammar({
     _type: ($) =>
       choice(
         $.tuple_type,
+        $.array_type,
         alias(choice(...primitiveTypes), $.primitive_type),
         $._type_identifier,
       ),
 
     tuple_type: ($) => seq("(", sepBy1(",", $._type), optional(","), ")"),
+
+    array_type: ($) =>
+      seq(
+        "[",
+        field("dimensions", $.array_dimensions),
+        "]",
+        field("element", $._type),
+      ),
+
+    array_dimensions: ($) =>
+      sepBy1(",", choice($.integer_literal, $.identifier, $.anonymous)),
 
     _type_identifier: ($) => alias($.identifier, $.type_identifier),
 
@@ -166,6 +178,8 @@ module.exports = grammar({
     boolean_literal: ($) => choice("true", "false"),
 
     identifier: (_) => /[_\p{XID_Start}][_\p{XID_Continue}]*/u,
+
+    anonymous: (_) => "_",
   },
 });
 

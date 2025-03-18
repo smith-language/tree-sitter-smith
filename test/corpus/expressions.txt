@@ -591,3 +591,75 @@ Variable definition with array of tuple pattern
         (tuple_expression
           (integer_literal)
           (boolean_literal)))))
+
+
+========
+Variable definition with typed array of tuple pattern
+========
+
+[(a, b), c]: [2](i32, bool) = [(1, true), (2, false)]
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (array_pattern
+      (tuple_pattern
+        (identifier)
+        (identifier))
+      (identifier))
+    type: (array_type
+        dimensions: (array_dimensions
+            (integer_literal))
+        element: (tuple_type
+            (primitive_type)
+            (primitive_type)))
+    value: (array_expression
+        (tuple_expression
+          (integer_literal)
+          (boolean_literal))
+        (tuple_expression
+          (integer_literal)
+          (boolean_literal)))))
+
+========
+Variable definition of type matrix
+========
+
+m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    type: (array_type
+        dimensions: (array_dimensions
+            (integer_literal)
+            (integer_literal))
+        element: (primitive_type))
+    value: (array_expression
+        (array_expression
+          (integer_literal) (integer_literal) (integer_literal))
+        (array_expression
+          (integer_literal) (integer_literal) (integer_literal)))))
+
+========
+Variable definition with anonymous array dimension
+========
+
+xs: [_]i32 = [1, 2, 3]
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    type: (array_type
+        dimensions: (array_dimensions
+            (anonymous))
+        element: (primitive_type))
+    value: (array_expression
+        (integer_literal)
+        (integer_literal)
+        (integer_literal))))

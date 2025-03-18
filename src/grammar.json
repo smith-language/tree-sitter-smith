@@ -573,6 +573,10 @@
           "name": "tuple_type"
         },
         {
+          "type": "SYMBOL",
+          "name": "array_type"
+        },
+        {
           "type": "ALIAS",
           "content": {
             "type": "CHOICE",
@@ -699,6 +703,86 @@
         {
           "type": "STRING",
           "value": ")"
+        }
+      ]
+    },
+    "array_type": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "FIELD",
+          "name": "dimensions",
+          "content": {
+            "type": "SYMBOL",
+            "name": "array_dimensions"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        },
+        {
+          "type": "FIELD",
+          "name": "element",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_type"
+          }
+        }
+      ]
+    },
+    "array_dimensions": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "integer_literal"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "anonymous"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "integer_literal"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "identifier"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "anonymous"
+                  }
+                ]
+              }
+            ]
+          }
         }
       ]
     },
@@ -865,6 +949,10 @@
       "type": "PATTERN",
       "value": "[_\\p{XID_Start}][_\\p{XID_Continue}]*",
       "flags": "u"
+    },
+    "anonymous": {
+      "type": "STRING",
+      "value": "_"
     }
   },
   "extras": [
