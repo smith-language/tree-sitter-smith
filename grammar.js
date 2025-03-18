@@ -41,12 +41,6 @@ module.exports = grammar({
 
   word: ($) => $.identifier,
 
-  conflicts: ($) => [
-    [$._expression, $._pattern],
-    [$.array_expression, $.array_pattern],
-    [$.function_definition, $._expression],
-  ],
-
   rules: {
     source_file: ($) => repeat($._statement),
 
@@ -61,8 +55,8 @@ module.exports = grammar({
         $.tuple_expression,
         $.array_expression,
         $.call_expression,
-        $.integer_literal,
         $.boolean_literal,
+        $.integer_literal,
         $.identifier,
       ),
 
@@ -132,8 +126,8 @@ module.exports = grammar({
       seq(
         "(",
         seq($._expression, ","),
-        repeat(seq($._expression, ",")),
-        optional($._expression),
+        sepBy(",", $._expression),
+        optional(","),
         ")",
       ),
 
@@ -159,6 +153,7 @@ module.exports = grammar({
 
     variable_definition: ($) =>
       seq(
+        "let",
         field("pattern", $._pattern),
         optional(seq(":", field("type", $._type))),
         "=",
@@ -167,13 +162,13 @@ module.exports = grammar({
 
     function_definition: ($) =>
       seq(
+        "fn",
         field("name", $.identifier),
         optional(field("type_parameters", $.type_parameters)),
         field("parameters", $.parameters),
-        ":",
+        "->",
         field("return_type", $._type),
-        "=",
-        field("body", $._expression),
+        field("body", $.block),
       ),
 
     type_parameters: ($) =>
@@ -191,6 +186,8 @@ module.exports = grammar({
 
     parameter: ($) =>
       seq(field("pattern", $._pattern), ":", field("type", $._type)),
+
+    block: ($) => seq("{", repeat($._statement), "}"),
 
     _type: ($) =>
       choice(
