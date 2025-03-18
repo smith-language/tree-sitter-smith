@@ -697,3 +697,71 @@ foo()
   (call_expression
     function: (identifier)
     arguments: (arguments)))
+
+
+========
+Function definition with one parameter
+========
+
+double(x: i32): i32 = x * 2
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (primitive_type)))
+    return_type: (primitive_type)
+    body: (binary_expression
+      left: (identifier)
+      operator: (multiply)
+      right: (integer_literal))))
+
+
+========
+Function definition with two parameters
+========
+
+sum_of_squares(x: i32, y: i32): i32 = x * x + y * y
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (primitive_type))
+      (parameter
+        pattern: (identifier)
+        type: (primitive_type)))
+    return_type: (primitive_type)
+    body: (binary_expression
+      left: (binary_expression
+        left: (identifier)
+        operator: (multiply)
+        right: (identifier))
+      operator: (add)
+      right: (binary_expression
+        left: (identifier)
+        operator: (multiply)
+        right: (identifier)))))
+
+========
+Function definition with no parameters
+========
+
+forty_two(): i32 = 42
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (primitive_type)
+    body: (integer_literal)))

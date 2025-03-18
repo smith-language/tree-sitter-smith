@@ -44,12 +44,14 @@ module.exports = grammar({
   conflicts: ($) => [
     [$._expression, $._pattern],
     [$.array_expression, $.array_pattern],
+    [$.function_definition, $._expression],
   ],
 
   rules: {
     source_file: ($) => repeat($._statement),
 
-    _statement: ($) => choice($.variable_definition, $._expression),
+    _statement: ($) =>
+      choice($.variable_definition, $.function_definition, $._expression),
 
     _expression: ($) =>
       choice(
@@ -163,12 +165,27 @@ module.exports = grammar({
         field("value", $._expression),
       ),
 
+    function_definition: ($) =>
+      seq(
+        field("name", $.identifier),
+        field("parameters", $.parameters),
+        ":",
+        field("return_type", $._type),
+        "=",
+        field("body", $._expression),
+      ),
+
+    parameters: ($) => seq("(", sepBy(",", $.parameter), optional(","), ")"),
+
+    parameter: ($) =>
+      seq(field("pattern", $._pattern), ":", field("type", $._type)),
+
     _type: ($) =>
       choice(
         $.tuple_type,
         $.array_type,
         alias(choice(...primitiveTypes), $.primitive_type),
-        $._type_identifier,
+        alias($.identifier, $.type_identifier),
       ),
 
     tuple_type: ($) => seq("(", sepBy1(",", $._type), optional(","), ")"),
@@ -183,8 +200,6 @@ module.exports = grammar({
 
     array_dimensions: ($) =>
       sepBy1(",", choice($.integer_literal, $.identifier, $.anonymous)),
-
-    _type_identifier: ($) => alias($.identifier, $.type_identifier),
 
     _pattern: ($) => choice($.tuple_pattern, $.array_pattern, $.identifier),
 
