@@ -663,3 +663,37 @@ xs: [_]i32 = [1, 2, 3]
         (integer_literal)
         (integer_literal)
         (integer_literal))))
+
+
+========
+Function call with positional and named arguments
+========
+
+clamp(10, min=0, max=20)
+
+---
+
+(source_file
+  (call_expression
+    function: (identifier)
+    arguments: (arguments
+      (integer_literal)
+      (keyword_argument
+        name: (identifier)
+        value: (integer_literal))
+      (keyword_argument
+        name: (identifier)
+        value: (integer_literal)))))
+
+========
+Function call with no arguments
+========
+
+foo()
+
+---
+
+(source_file
+  (call_expression
+    function: (identifier)
+    arguments: (arguments)))
