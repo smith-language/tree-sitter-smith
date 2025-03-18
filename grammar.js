@@ -168,12 +168,24 @@ module.exports = grammar({
     function_definition: ($) =>
       seq(
         field("name", $.identifier),
+        optional(field("type_parameters", $.type_parameters)),
         field("parameters", $.parameters),
         ":",
         field("return_type", $._type),
         "=",
         field("body", $._expression),
       ),
+
+    type_parameters: ($) =>
+      seq("[", sepBy1(",", $.type_parameter), optional(","), "]"),
+
+    type_parameter: ($) =>
+      seq(
+        field("name", $._type_identifier),
+        optional(field("bounds", $.trait_bounds)),
+      ),
+
+    trait_bounds: ($) => seq(":", sepBy1("+", $._type)),
 
     parameters: ($) => seq("(", sepBy(",", $.parameter), optional(","), ")"),
 
@@ -185,8 +197,10 @@ module.exports = grammar({
         $.tuple_type,
         $.array_type,
         alias(choice(...primitiveTypes), $.primitive_type),
-        alias($.identifier, $.type_identifier),
+        $._type_identifier,
       ),
+
+    _type_identifier: ($) => alias($.identifier, $.type_identifier),
 
     tuple_type: ($) => seq("(", sepBy1(",", $._type), optional(","), ")"),
 

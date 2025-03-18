@@ -765,3 +765,31 @@ forty_two(): i32 = 42
     parameters: (parameters)
     return_type: (primitive_type)
     body: (integer_literal)))
+
+
+========
+Generic Function definition with tuple pattern for parameter
+========
+
+first[T, U]((a, b): (T, U)): T = a
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (type_identifier))
+      (type_parameter
+        name: (type_identifier)))
+    parameters: (parameters
+      (parameter
+        pattern: (tuple_pattern
+          (identifier)
+          (identifier))
+        type: (tuple_type
+          (type_identifier)
+          (type_identifier))))
+    return_type: (type_identifier)
+    body: (identifier)))
