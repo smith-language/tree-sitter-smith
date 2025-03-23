@@ -796,3 +796,48 @@ fn first[T, U]((a, b): (T, U)) -> T { a }
           (type_identifier))))
     return_type: (type_identifier)
     body: (block (identifier))))
+
+========
+Multi line function definition
+========
+
+fn sum_of_squares[T: Num](x: T, y: T) -> T {
+  let x2 = x * x
+  let y2 = y * y
+  x2 + y2
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (type_identifier)
+        bounds: (trait_bounds (type_identifier))))
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (type_identifier))
+      (parameter
+        pattern: (identifier)
+        type: (type_identifier)))
+    return_type: (type_identifier)
+    body: (block
+      (variable_definition
+        pattern: (identifier)
+        value: (binary_expression
+          left: (identifier)
+          operator: (multiply)
+          right: (identifier)))
+      (variable_definition
+        pattern: (identifier)
+        value: (binary_expression
+          left: (identifier)
+          operator: (multiply)
+          right: (identifier)))
+      (binary_expression
+        left: (identifier)
+        operator: (add)
+        right: (identifier)))))
