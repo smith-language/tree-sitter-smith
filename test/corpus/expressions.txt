@@ -938,3 +938,38 @@ fn transpose[T, m, n](matrix: [m, n]T) -> [n, m]T {
             indices: (indices
               (identifier)
               (identifier))))))))
+
+========
+Struct definition with two fields
+========
+
+struct Point {
+    x: i32
+    y: i32
+}
+
+let point = Point(x=20, y=30)
+
+---
+
+(source_file
+  (struct_definition
+    name: (identifier)
+    fields: (fields
+      (field
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type))))
+  (variable_definition
+    pattern: (identifier)
+    value: (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (keyword_argument
+          name: (identifier)
+          value: (integer_literal))
+        (keyword_argument
+          name: (identifier)
+          value: (integer_literal))))))

@@ -45,7 +45,12 @@ module.exports = grammar({
     source_file: ($) => repeat($._statement),
 
     _statement: ($) =>
-      choice($.variable_definition, $.function_definition, $._expression),
+      choice(
+        $.variable_definition,
+        $.function_definition,
+        $.struct_definition,
+        $._expression,
+      ),
 
     _expression: ($) =>
       choice(
@@ -189,6 +194,18 @@ module.exports = grammar({
         field("return_type", $._type),
         field("body", $.block),
       ),
+
+    struct_definition: ($) =>
+      seq(
+        "struct",
+        field("name", $.identifier),
+        optional(field("type_parameters", $.type_parameters)),
+        field("fields", $.fields),
+      ),
+
+    fields: ($) => seq("{", repeat($.field), "}"),
+
+    field: ($) => seq(field("name", $.identifier), ":", field("type", $._type)),
 
     block: ($) => seq("{", repeat($._statement), "}"),
 
