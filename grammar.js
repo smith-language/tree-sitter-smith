@@ -41,6 +41,11 @@ module.exports = grammar({
 
   word: ($) => $.identifier,
 
+  conflicts: ($) => [
+    [$._expression, $._pattern],
+    [$.array_expression, $.array_pattern],
+  ],
+
   rules: {
     source_file: ($) => repeat($._statement),
 
@@ -153,7 +158,6 @@ module.exports = grammar({
 
     variable_definition: ($) =>
       seq(
-        "let",
         field("pattern", $._pattern),
         optional(seq(":", field("type", $._type))),
         "=",

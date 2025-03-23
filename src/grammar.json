@@ -670,10 +670,6 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "let"
-        },
-        {
           "type": "FIELD",
           "name": "pattern",
           "content": {
@@ -1393,7 +1389,16 @@
       "value": "\\s"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "_expression",
+      "_pattern"
+    ],
+    [
+      "array_expression",
+      "array_pattern"
+    ]
+  ],
   "precedences": [],
   "externals": [],
   "inline": [],

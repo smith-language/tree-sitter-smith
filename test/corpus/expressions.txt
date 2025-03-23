@@ -455,7 +455,7 @@ trueValue or falseValue
 Variable definition where value is int literal
 ========
 
-let x = 42
+x = 42
 
 ---
 
@@ -468,7 +468,7 @@ let x = 42
 Variable definition with type where value is int literal
 ========
 
-let x: i32 = 42
+x: i32 = 42
 
 ---
 
@@ -482,7 +482,7 @@ let x: i32 = 42
 Variable definition where value is tuple
 ========
 
-let x = (42, true)
+x = (42, true)
 
 ---
 
@@ -498,7 +498,7 @@ let x = (42, true)
 Variable definition where type and value are tuple
 ========
 
-let x: (i32, bool) = (42, true)
+x: (i32, bool) = (42, true)
 
 ---
 
@@ -517,7 +517,7 @@ let x: (i32, bool) = (42, true)
 Variable definition with tuple pattern
 ========
 
-let (x, y): (i32, bool) = (42, true)
+(x, y): (i32, bool) = (42, true)
 
 ---
 
@@ -538,7 +538,7 @@ let (x, y): (i32, bool) = (42, true)
 Variable definition where value is array
 ========
 
-let x = [2, 4, 6]
+x = [2, 4, 6]
 
 ---
 
@@ -555,7 +555,7 @@ let x = [2, 4, 6]
 Variable definition with array pattern
 ========
 
-let [x, y, z] = [2, 4, 6]
+[x, y, z] = [2, 4, 6]
 
 ---
 
@@ -574,7 +574,7 @@ let [x, y, z] = [2, 4, 6]
 Variable definition with array of tuple pattern
 ========
 
-let [(a, b), c] = [(1, true), (2, false)]
+[(a, b), c] = [(1, true), (2, false)]
 
 ---
 
@@ -598,7 +598,7 @@ let [(a, b), c] = [(1, true), (2, false)]
 Variable definition with typed array of tuple pattern
 ========
 
-let [(a, b), c]: [2](i32, bool) = [(1, true), (2, false)]
+[(a, b), c]: [2](i32, bool) = [(1, true), (2, false)]
 
 ---
 
@@ -627,7 +627,7 @@ let [(a, b), c]: [2](i32, bool) = [(1, true), (2, false)]
 Variable definition of type matrix
 ========
 
-let m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
+m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
 
 ---
 
@@ -649,7 +649,7 @@ let m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
 Variable definition with anonymous array dimension
 ========
 
-let xs: [_]i32 = [1, 2, 3]
+xs: [_]i32 = [1, 2, 3]
 
 ---
 
@@ -803,8 +803,8 @@ Multi line function definition
 ========
 
 fn sum_of_squares[T: Num](x: T, y: T) -> T {
-    let x2 = x * x
-    let y2 = y * y
+    x2 = x * x
+    y2 = y * y
     x2 + y2
 }
 
