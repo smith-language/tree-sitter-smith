@@ -55,6 +55,8 @@ module.exports = grammar({
         $.tuple_expression,
         $.array_expression,
         $.call_expression,
+        $.index_expression,
+        $.for_expression,
         $.boolean_literal,
         $.integer_literal,
         $.identifier,
@@ -150,6 +152,23 @@ module.exports = grammar({
 
     keyword_argument: ($) =>
       seq(field("name", $.identifier), "=", field("value", $._expression)),
+
+    index_expression: ($) =>
+      prec(
+        PREC.call,
+        seq(field("array", $._expression), field("indices", $.indices)),
+      ),
+
+    indices: ($) => seq("[", sepBy1(",", $._expression), optional(","), "]"),
+
+    for_expression: ($) =>
+      seq(
+        "for",
+        field("index_variables", $.index_variables),
+        field("body", $.block),
+      ),
+
+    index_variables: ($) => sepBy1(",", $.identifier),
 
     variable_definition: ($) =>
       seq(

@@ -841,3 +841,100 @@ fn sum_of_squares[T: Num](x: T, y: T) -> T {
         left: (identifier)
         operator: (add)
         right: (identifier)))))
+
+========
+Index expression with single index
+========
+
+c[i]
+
+---
+
+(source_file
+  (index_expression
+    array: (identifier)
+    indices: (indices
+      (identifier))))
+
+========
+Index expression with multiple indices
+========
+
+xs[i, j]
+
+---
+
+(source_file
+  (index_expression
+    array: (identifier)
+    indices: (indices
+      (identifier)
+      (identifier))))
+
+
+========
+For expression with single index
+========
+
+for i { c[i] * 2 }
+
+---
+
+(source_file
+  (for_expression
+    index_variables: (index_variables
+      (identifier))
+    body: (block
+      (binary_expression
+        left: (index_expression
+          array: (identifier)
+          indices: (indices
+            (identifier)))
+        operator: (multiply)
+        right: (integer_literal)))))
+
+
+========
+Transpose function
+========
+
+fn transpose[T, m, n](matrix: [m, n]T) -> [n, m]T {
+  for i, j { matrix[j, i] }
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (type_identifier))
+      (type_parameter
+        name: (type_identifier))
+      (type_parameter
+        name: (type_identifier)))
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (array_type
+          dimensions: (array_dimensions
+            (identifier)
+            (identifier))
+          element: (type_identifier))))
+    return_type: (array_type
+      dimensions: (array_dimensions
+        (identifier)
+        (identifier))
+      element: (type_identifier))
+    body: (block
+      (for_expression
+        index_variables: (index_variables
+          (identifier)
+          (identifier))
+        body: (block
+          (index_expression
+            array: (identifier)
+            indices: (indices
+              (identifier)
+              (identifier))))))))
