@@ -973,3 +973,41 @@ let point = Point(x=20, y=30)
         (keyword_argument
           name: (identifier)
           value: (integer_literal))))))
+
+
+========
+Generic struct definition
+========
+
+struct Linear[T: Num, in, out] {
+    weights: [out, in]T
+    bias: [out]T
+}
+
+---
+
+(source_file
+  (struct_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (type_identifier)
+        bounds: (trait_bounds (type_identifier)))
+      (type_parameter
+        name: (type_identifier))
+      (type_parameter
+        name: (type_identifier)))
+    fields: (fields
+      (field
+        name: (identifier)
+        type: (array_type
+          dimensions: (array_dimensions
+            (identifier)
+            (identifier))
+          element: (type_identifier)))
+      (field
+        name: (identifier)
+        type: (array_type
+          dimensions: (array_dimensions
+            (identifier))
+          element: (type_identifier))))))
