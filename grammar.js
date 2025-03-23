@@ -41,11 +41,6 @@ module.exports = grammar({
 
   word: ($) => $.identifier,
 
-  conflicts: ($) => [
-    [$._expression, $._pattern],
-    [$.array_expression, $.array_pattern],
-  ],
-
   rules: {
     source_file: ($) => repeat($._statement),
 
@@ -158,6 +153,7 @@ module.exports = grammar({
 
     variable_definition: ($) =>
       seq(
+        "let",
         field("pattern", $._pattern),
         optional(seq(":", field("type", $._type))),
         "=",
@@ -175,6 +171,8 @@ module.exports = grammar({
         field("body", $.block),
       ),
 
+    block: ($) => seq("{", repeat($._statement), "}"),
+
     type_parameters: ($) =>
       seq("[", sepBy1(",", $.type_parameter), optional(","), "]"),
 
@@ -190,8 +188,6 @@ module.exports = grammar({
 
     parameter: ($) =>
       seq(field("pattern", $._pattern), ":", field("type", $._type)),
-
-    block: ($) => seq("{", repeat($._statement), "}"),
 
     _type: ($) =>
       choice(

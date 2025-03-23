@@ -670,6 +670,10 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "STRING",
+          "value": "let"
+        },
+        {
           "type": "FIELD",
           "name": "pattern",
           "content": {
@@ -774,6 +778,26 @@
             "type": "SYMBOL",
             "name": "block"
           }
+        }
+      ]
+    },
+    "block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_statement"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
         }
       ]
     },
@@ -970,26 +994,6 @@
             "type": "SYMBOL",
             "name": "_type"
           }
-        }
-      ]
-    },
-    "block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "{"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_statement"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "}"
         }
       ]
     },
@@ -1389,16 +1393,7 @@
       "value": "\\s"
     }
   ],
-  "conflicts": [
-    [
-      "_expression",
-      "_pattern"
-    ],
-    [
-      "array_expression",
-      "array_pattern"
-    ]
-  ],
+  "conflicts": [],
   "precedences": [],
   "externals": [],
   "inline": [],

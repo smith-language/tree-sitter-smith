@@ -455,7 +455,7 @@ trueValue or falseValue
 Variable definition where value is int literal
 ========
 
-x = 42
+let x = 42
 
 ---
 
@@ -468,7 +468,7 @@ x = 42
 Variable definition with type where value is int literal
 ========
 
-x: i32 = 42
+let x: i32 = 42
 
 ---
 
@@ -482,7 +482,7 @@ x: i32 = 42
 Variable definition where value is tuple
 ========
 
-x = (42, true)
+let x = (42, true)
 
 ---
 
@@ -498,7 +498,7 @@ x = (42, true)
 Variable definition where type and value are tuple
 ========
 
-x: (i32, bool) = (42, true)
+let x: (i32, bool) = (42, true)
 
 ---
 
@@ -517,7 +517,7 @@ x: (i32, bool) = (42, true)
 Variable definition with tuple pattern
 ========
 
-(x, y): (i32, bool) = (42, true)
+let (x, y): (i32, bool) = (42, true)
 
 ---
 
@@ -538,7 +538,7 @@ Variable definition with tuple pattern
 Variable definition where value is array
 ========
 
-x = [2, 4, 6]
+let x = [2, 4, 6]
 
 ---
 
@@ -555,7 +555,7 @@ x = [2, 4, 6]
 Variable definition with array pattern
 ========
 
-[x, y, z] = [2, 4, 6]
+let [x, y, z] = [2, 4, 6]
 
 ---
 
@@ -574,7 +574,7 @@ Variable definition with array pattern
 Variable definition with array of tuple pattern
 ========
 
-[(a, b), c] = [(1, true), (2, false)]
+let [(a, b), c] = [(1, true), (2, false)]
 
 ---
 
@@ -598,7 +598,7 @@ Variable definition with array of tuple pattern
 Variable definition with typed array of tuple pattern
 ========
 
-[(a, b), c]: [2](i32, bool) = [(1, true), (2, false)]
+let [(a, b), c]: [2](i32, bool) = [(1, true), (2, false)]
 
 ---
 
@@ -627,7 +627,7 @@ Variable definition with typed array of tuple pattern
 Variable definition of type matrix
 ========
 
-m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
+let m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
 
 ---
 
@@ -649,7 +649,7 @@ m: [2, 3]i32 = [[1, 2, 3], [4, 5, 6]]
 Variable definition with anonymous array dimension
 ========
 
-xs: [_]i32 = [1, 2, 3]
+let xs: [_]i32 = [1, 2, 3]
 
 ---
 
@@ -796,50 +796,3 @@ fn first[T, U]((a, b): (T, U)) -> T { a }
           (type_identifier))))
     return_type: (type_identifier)
     body: (block (identifier))))
-
-
-========
-Multi line function definition
-========
-
-fn sum_of_squares[T: Num](x: T, y: T) -> T {
-    x2 = x * x
-    y2 = y * y
-    x2 + y2
-}
-
----
-
-(source_file
-  (function_definition
-    name: (identifier)
-    type_parameters: (type_parameters
-      (type_parameter
-        name: (type_identifier)
-        bounds: (trait_bounds
-          (type_identifier))))
-    parameters: (parameters
-      (parameter
-        pattern: (identifier)
-        type: (type_identifier))
-      (parameter
-        pattern: (identifier)
-        type: (type_identifier)))
-    return_type: (type_identifier)
-    body: (block
-      (variable_definition
-        pattern: (identifier)
-        value: (binary_expression
-        left: (identifier)
-        operator: (multiply)
-        right: (identifier)))
-      (variable_definition
-        pattern: (identifier)
-        value: (binary_expression
-        left: (identifier)
-        operator: (multiply)
-        right: (identifier)))
-      (binary_expression
-        left: (identifier)
-        operator: (add)
-        right: (identifier)))))

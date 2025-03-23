@@ -1156,6 +1156,10 @@
     "named": true
   },
   {
+    "type": "let",
+    "named": false
+  },
+  {
     "type": "modulo",
     "named": true
   },
