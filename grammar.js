@@ -62,6 +62,7 @@ module.exports = grammar({
         $.call_expression,
         $.index_expression,
         $.for_expression,
+        $.if_expression,
         $.boolean_literal,
         $.integer_literal,
         $.identifier,
@@ -174,6 +175,21 @@ module.exports = grammar({
       ),
 
     index_variables: ($) => sepBy1(",", $.identifier),
+
+    if_expression: ($) =>
+      seq(
+        "if",
+        field("condition", $._expression),
+        field("then", $.block),
+        optional(field("elifs", $.elifs)),
+        "else",
+        field("else", $.block),
+      ),
+
+    elifs: ($) => repeat1($.elif),
+
+    elif: ($) =>
+      seq("elif", field("condition", $._expression), field("then", $.block)),
 
     variable_definition: ($) =>
       seq(

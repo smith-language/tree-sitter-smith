@@ -1011,3 +1011,48 @@ struct Linear[T: Num, in, out] {
           dimensions: (array_dimensions
             (identifier))
           element: (type_identifier))))))
+
+
+========
+If then else expression
+========
+
+if x > y { x } else { y }
+
+---
+
+(source_file
+  (if_expression
+    condition: (binary_expression
+      left: (identifier)
+      operator: (greater)
+      right: (identifier))
+    then: (block (identifier))
+    else: (block (identifier))))
+
+
+========
+If then elif else expression
+========
+
+if x < min { min }
+elif x > max { max }
+else { x }
+
+---
+
+(source_file
+  (if_expression
+    condition: (binary_expression
+      left: (identifier)
+      operator: (less)
+      right: (identifier))
+    then: (block (identifier))
+    elifs: (elifs
+      (elif
+        condition: (binary_expression
+          left: (identifier)
+          operator: (greater)
+          right: (identifier))
+        then: (block (identifier))))
+    else: (block (identifier))))
