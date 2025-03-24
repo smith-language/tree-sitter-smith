@@ -1075,3 +1075,30 @@ foo.bar.baz
       object: (identifier)
       field: (identifier))
     field: (identifier)))
+
+========
+Method call expression
+========
+
+point.with(x=10)
+foo.bar(42).baz(true)
+
+---
+
+(source_file
+  (method_call_expression
+    object: (identifier)
+    method: (identifier)
+    arguments: (arguments
+      (keyword_argument
+        name: (identifier)
+        value: (integer_literal))))
+  (method_call_expression
+    object: (method_call_expression
+      object: (identifier)
+      method: (identifier)
+      arguments: (arguments
+        (integer_literal)))
+    method: (identifier)
+    arguments: (arguments
+      (boolean_literal))))

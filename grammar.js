@@ -14,7 +14,8 @@ const PREC = {
   add: 3,
   multiply: 4,
   unary: 5,
-  call: 6,
+  field: 6,
+  call: 7,
 };
 
 const primitiveTypes = [
@@ -64,6 +65,7 @@ module.exports = grammar({
         $.for_expression,
         $.if_expression,
         $.field_access_expression,
+        $.method_call_expression,
         $.boolean_literal,
         $.integer_literal,
         $.identifier,
@@ -194,8 +196,19 @@ module.exports = grammar({
 
     field_access_expression: ($) =>
       prec(
-        PREC.call,
+        PREC.field,
         seq(field("object", $._expression), ".", field("field", $.identifier)),
+      ),
+
+    method_call_expression: ($) =>
+      prec(
+        PREC.call,
+        seq(
+          field("object", $._expression),
+          ".",
+          field("method", $.identifier),
+          field("arguments", $.arguments),
+        ),
       ),
 
     variable_definition: ($) =>
