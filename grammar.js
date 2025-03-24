@@ -66,8 +66,10 @@ module.exports = grammar({
         $.if_expression,
         $.field_access_expression,
         $.method_call_expression,
+        $.match_expression,
         $.boolean_literal,
         $.integer_literal,
+        $.string_literal,
         $.identifier,
       ),
 
@@ -211,6 +213,24 @@ module.exports = grammar({
         ),
       ),
 
+    match_expression: ($) =>
+      seq(
+        "match",
+        field("value", $._expression),
+        field("cases", $.match_cases),
+      ),
+
+    match_cases: ($) => seq("{", repeat1($.match_case), "}"),
+
+    match_case: ($) =>
+      seq(
+        field("pattern", $._pattern),
+        optional(field("guard", $.match_guard)),
+        field("body", $.block),
+      ),
+
+    match_guard: ($) => seq("if", $._expression),
+
     variable_definition: ($) =>
       seq(
         "let",
@@ -284,15 +304,28 @@ module.exports = grammar({
     array_dimensions: ($) =>
       sepBy1(",", choice($.integer_literal, $.identifier, $.anonymous)),
 
-    _pattern: ($) => choice($.tuple_pattern, $.array_pattern, $.identifier),
+    _pattern: ($) =>
+      choice(
+        $.tuple_pattern,
+        $.array_pattern,
+        $.rest_pattern,
+        $.identifier,
+        $.integer_literal,
+        $.boolean_literal,
+        $.string_literal,
+      ),
 
     tuple_pattern: ($) => seq("(", sepBy(",", $._pattern), optional(","), ")"),
 
     array_pattern: ($) => seq("[", sepBy(",", $._pattern), optional(","), "]"),
 
+    rest_pattern: ($) => seq("*", $.identifier),
+
     integer_literal: ($) => /\d+/,
 
     boolean_literal: ($) => choice("true", "false"),
+
+    string_literal: ($) => seq('"', repeat(/[^"]/), '"'),
 
     identifier: (_) => /[_\p{XID_Start}][_\p{XID_Continue}]*/u,
 

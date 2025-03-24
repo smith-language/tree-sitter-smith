@@ -1102,3 +1102,98 @@ foo.bar(42).baz(true)
     method: (identifier)
     arguments: (arguments
       (boolean_literal))))
+
+========
+Simple match expression with empty array and single element
+========
+
+match xs {
+  [] { 0 }
+  [x] { x }
+}
+
+---
+
+(source_file
+  (match_expression
+    value: (identifier)
+    cases: (match_cases
+      (match_case
+        pattern: (array_pattern)
+        body: (block
+          (integer_literal)))
+      (match_case
+        pattern: (array_pattern
+          (identifier))
+        body: (block
+          (identifier))))))
+
+========
+Match expression with rest pattern
+========
+
+match xs {
+  [] { init }
+  [x, *xs] { fold(xs, f(init, x), f) }
+}
+
+---
+
+(source_file
+  (match_expression
+    value: (identifier)
+    cases: (match_cases
+      (match_case
+        pattern: (array_pattern)
+        body: (block
+          (identifier)))
+      (match_case
+        pattern: (array_pattern
+          (identifier)
+          (rest_pattern
+            (identifier)))
+        body: (block
+          (call_expression
+            function: (identifier)
+            arguments: (arguments
+              (identifier)
+              (call_expression
+                function: (identifier)
+                arguments: (arguments
+                  (identifier)
+                  (identifier)))
+              (identifier))))))))
+
+========
+Match expression with guard
+========
+
+match n {
+  0 { "zero" }
+  n if n < 0 { "negative" }
+  n { "positive" }
+}
+
+---
+
+(source_file
+  (match_expression
+    value: (identifier)
+    cases: (match_cases
+      (match_case
+        pattern: (integer_literal)
+        body: (block
+          (string_literal)))
+      (match_case
+        pattern: (identifier)
+        guard: (match_guard
+          (binary_expression
+            left: (identifier)
+            operator: (less)
+            right: (integer_literal)))
+        body: (block
+          (string_literal)))
+      (match_case
+        pattern: (identifier)
+        body: (block
+          (string_literal))))))
