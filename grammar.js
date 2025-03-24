@@ -63,6 +63,7 @@ module.exports = grammar({
         $.index_expression,
         $.for_expression,
         $.if_expression,
+        $.field_access_expression,
         $.boolean_literal,
         $.integer_literal,
         $.identifier,
@@ -190,6 +191,12 @@ module.exports = grammar({
 
     elif: ($) =>
       seq("elif", field("condition", $._expression), field("then", $.block)),
+
+    field_access_expression: ($) =>
+      prec(
+        PREC.call,
+        seq(field("object", $._expression), ".", field("field", $.identifier)),
+      ),
 
     variable_definition: ($) =>
       seq(

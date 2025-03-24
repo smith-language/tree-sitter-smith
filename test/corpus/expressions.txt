@@ -1056,3 +1056,22 @@ else { x }
           right: (identifier))
         then: (block (identifier))))
     else: (block (identifier))))
+
+========
+Field access expression
+========
+
+point.x
+foo.bar.baz
+
+---
+
+(source_file
+  (field_access_expression
+    object: (identifier)
+    field: (identifier))
+  (field_access_expression
+    object: (field_access_expression
+      object: (identifier)
+      field: (identifier))
+    field: (identifier)))
