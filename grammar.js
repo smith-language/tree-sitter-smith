@@ -67,6 +67,7 @@ module.exports = grammar({
         $.field_access_expression,
         $.method_call_expression,
         $.match_expression,
+        $.lambda_expression,
         $.boolean_literal,
         $.integer_literal,
         $.string_literal,
@@ -231,6 +232,15 @@ module.exports = grammar({
 
     match_guard: ($) => seq("if", $._expression),
 
+    lambda_expression: ($) =>
+      seq(
+        "fn",
+        optional(field("type_parameters", $.type_parameters)),
+        field("parameters", $.parameters),
+        optional(seq("->", field("return_type", $._type))),
+        field("body", $.block),
+      ),
+
     variable_definition: ($) =>
       seq(
         "let",
@@ -246,8 +256,7 @@ module.exports = grammar({
         field("name", $.identifier),
         optional(field("type_parameters", $.type_parameters)),
         field("parameters", $.parameters),
-        "->",
-        field("return_type", $._type),
+        optional(seq("->", field("return_type", $._type))),
         field("body", $.block),
       ),
 
@@ -279,7 +288,10 @@ module.exports = grammar({
     parameters: ($) => seq("(", sepBy(",", $.parameter), optional(","), ")"),
 
     parameter: ($) =>
-      seq(field("pattern", $._pattern), ":", field("type", $._type)),
+      seq(
+        field("pattern", $._pattern),
+        optional(seq(":", field("type", $._type))),
+      ),
 
     _type: ($) =>
       choice(

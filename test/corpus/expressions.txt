@@ -1260,3 +1260,127 @@ fn fold(xs: [_]T, init: T, f: fn(acc: T, val: T) -> T) -> T {
                       (identifier)
                       (identifier)))
                   (identifier))))))))))
+
+========
+Fully typed lambda expression
+========
+
+fn sum[T: Num](xs: [_]T) -> T {
+    fold(xs, 0, fn(x: T, y: T) -> T { x + y })
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (type_identifier)
+        bounds: (trait_bounds (type_identifier))))
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (array_type
+          dimensions: (array_dimensions
+            (anonymous))
+          element: (type_identifier))))
+    return_type: (type_identifier)
+    body: (block
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (identifier)
+          (integer_literal)
+          (lambda_expression
+            parameters: (parameters
+              (parameter
+                pattern: (identifier)
+                type: (type_identifier))
+              (parameter
+                pattern: (identifier)
+                type: (type_identifier)))
+            return_type: (type_identifier)
+            body: (block
+              (binary_expression
+                left: (identifier)
+                operator: (add)
+                right: (identifier)))))))))
+
+
+========
+Inferred typed lambda expression
+========
+
+fn sum[T: Num](xs: [_]T) -> T {
+    fold(xs, 0, fn(x, y) { x + y })
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (type_identifier)
+        bounds: (trait_bounds (type_identifier))))
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (array_type
+          dimensions: (array_dimensions
+            (anonymous))
+          element: (type_identifier))))
+    return_type: (type_identifier)
+    body: (block
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (identifier)
+          (integer_literal)
+          (lambda_expression
+            parameters: (parameters
+              (parameter
+                pattern: (identifier))
+              (parameter
+                pattern: (identifier)))
+            body: (block
+              (binary_expression
+                left: (identifier)
+                operator: (add)
+                right: (identifier)))))))))
+
+========
+Inferred typed function definition and lambda expression
+========
+
+fn sum(xs) {
+    fold(xs, 0, fn(x, y) { x + y })
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)))
+    body: (block
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (identifier)
+          (integer_literal)
+          (lambda_expression
+            parameters: (parameters
+              (parameter
+                pattern: (identifier))
+              (parameter
+                pattern: (identifier)))
+            body: (block
+              (binary_expression
+                left: (identifier)
+                operator: (add)
+                right: (identifier)))))))))
