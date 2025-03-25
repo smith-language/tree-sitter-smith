@@ -285,6 +285,7 @@ module.exports = grammar({
       choice(
         $.tuple_type,
         $.array_type,
+        $.function_type,
         alias(choice(...primitiveTypes), $.primitive_type),
         $._type_identifier,
       ),
@@ -303,6 +304,15 @@ module.exports = grammar({
 
     array_dimensions: ($) =>
       sepBy1(",", choice($.integer_literal, $.identifier, $.anonymous)),
+
+    function_type: ($) =>
+      seq(
+        "fn",
+        optional(field("type_parameters", $.type_parameters)),
+        field("parameters", $.parameters),
+        "->",
+        field("return_type", $._type),
+      ),
 
     _pattern: ($) =>
       choice(

@@ -1197,3 +1197,66 @@ match n {
         pattern: (identifier)
         body: (block
           (string_literal))))))
+
+========
+Function type
+========
+
+fn fold(xs: [_]T, init: T, f: fn(acc: T, val: T) -> T) -> T {
+    match xs {
+        [] { init }
+        [x, *xs] { fold(xs, f(init, x), f) }
+    }
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        pattern: (identifier)
+        type: (array_type
+          dimensions: (array_dimensions
+            (anonymous))
+          element: (type_identifier)))
+      (parameter
+        pattern: (identifier)
+        type: (type_identifier))
+      (parameter
+        pattern: (identifier)
+        type: (function_type
+          parameters: (parameters
+            (parameter
+              pattern: (identifier)
+              type: (type_identifier))
+            (parameter
+              pattern: (identifier)
+              type: (type_identifier)))
+          return_type: (type_identifier))))
+    return_type: (type_identifier)
+    body: (block
+      (match_expression
+        value: (identifier)
+        cases: (match_cases
+          (match_case
+            pattern: (array_pattern)
+            body: (block
+              (identifier)))
+          (match_case
+            pattern: (array_pattern
+              (identifier)
+              (rest_pattern
+                (identifier)))
+            body: (block
+              (call_expression
+                function: (identifier)
+                arguments: (arguments
+                  (identifier)
+                  (call_expression
+                    function: (identifier)
+                    arguments: (arguments
+                      (identifier)
+                      (identifier)))
+                  (identifier))))))))))
