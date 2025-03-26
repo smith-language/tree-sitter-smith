@@ -1384,3 +1384,54 @@ fn sum(xs) {
                 left: (identifier)
                 operator: (add)
                 right: (identifier)))))))))
+
+========
+basic_template
+========
+
+let message = `Hello world`
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (template_literal
+      content: (template_content
+        (template_chars)))))
+
+========
+interpolation_template
+========
+
+let message = `Hello ${name}!`
+
+---
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (template_literal
+      content: (template_content
+        (template_chars)
+        (template_interpolation
+          (identifier))
+        (template_chars)))))
+
+========
+tagged_template
+========
+
+let html_content = html`<h1>Hello ${name}</h1>`
+
+---
+
+(source_file
+  (variable_definition
+    pattern: (identifier)
+    value: (template_literal
+      tag: (identifier)
+      content: (template_content
+        (template_chars)
+        (template_interpolation
+          (identifier))
+        (template_chars)))))

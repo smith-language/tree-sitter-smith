@@ -71,6 +71,7 @@ module.exports = grammar({
         $.boolean_literal,
         $.integer_literal,
         $.string_literal,
+        $.template_literal,
         $.identifier,
       ),
 
@@ -348,6 +349,22 @@ module.exports = grammar({
     boolean_literal: ($) => choice("true", "false"),
 
     string_literal: ($) => seq('"', repeat(/[^"]/), '"'),
+
+    template_literal: ($) =>
+      prec(
+        1,
+        seq(
+          optional(field("tag", $.identifier)),
+          field("content", $.template_content),
+        ),
+      ),
+
+    template_content: ($) =>
+      seq("`", repeat(choice($.template_chars, $.template_interpolation)), "`"),
+
+    template_chars: ($) => token(prec(1, /[^`$]+|[$][^{]/)),
+
+    template_interpolation: ($) => seq("${", $._expression, "}"),
 
     identifier: (_) => /[_\p{XID_Start}][_\p{XID_Continue}]*/u,
 
